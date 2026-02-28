@@ -1,12 +1,22 @@
-FROM alpine:3.23.3 AS build
-RUN apk update && apk upgrade --no-cache
+# -------- Build Stage --------
+FROM node:20-alpine AS build
+
 WORKDIR /app
+
 COPY package*.json ./
 RUN npm ci
+
 COPY . .
 RUN npm run build
 
+
+# -------- Runtime Stage --------
 FROM nginx:alpine
+
+# Security patch (THIS is where apk upgrade belongs)
+RUN apk update && apk upgrade --no-cache
+
 COPY --from=build /app/dist /usr/share/nginx/html
+
 EXPOSE 80
-CMD ["nginx","-g","daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]]
