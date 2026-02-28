@@ -1,4 +1,5 @@
-FROM node:20-alpine AS build
+FROM alpine:3.23.3
+RUN apk update && apk upgrade --no-cache
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
