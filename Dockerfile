@@ -1,4 +1,4 @@
-FROM alpine:3.23.3
+FROM alpine:3.23.3 AS build
 RUN apk update && apk upgrade --no-cache
 WORKDIR /app
 COPY package*.json ./
